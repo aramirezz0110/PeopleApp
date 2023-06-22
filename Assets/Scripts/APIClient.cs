@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft;
 using Newtonsoft.Json;
+using System;
 
 public class APIClient : MonoBehaviour
 {
     [SerializeField] private string URL = "https://randomuser.me/api/?results=20";
-    public Root root;
-    private void Start()
+    [field:SerializeField] public Root Root { get; private set; }
+    public Action DataReceived;
+    private void Awake()
     {
         StartCoroutine(GetDataCO());
     }
@@ -24,15 +26,10 @@ public class APIClient : MonoBehaviour
             else
             {
                 string json = request.downloadHandler.text;
-                root = JsonConvert.DeserializeObject<Root>(json);
-                print(root.info.version);
+                Root = JsonConvert.DeserializeObject<Root>(json);      
+                DataReceived?.Invoke();
             }
-
         }
     }
-    public Root GetData()
-    {
-        StartCoroutine(GetDataCO());
-        return root;
-    }
+    
 }
