@@ -11,13 +11,14 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject peopleListPanel;
     [SerializeField] private GameObject personInfoPanel;
     [SerializeField] private PersonCardController[] personCardControllers;
+    [SerializeField] private PersonDetailsController personDetailsController;
     [SerializeField] private List<Sprite> photos=new List<Sprite>();
     private void Start()
     {
         ActivatePanel(loadingPanel);
     }
     public void ActivatePeopleListPanel() => ActivatePanel(peopleListPanel);
-    public void ActivatePeopleInfoPanel() => ActivatePanel(personInfoPanel);
+    public void ActivatePersonInfoPanel() => ActivatePanel(personInfoPanel);
     public void LoadPersonCardsInfo(Result[] results)
     {
         StartCoroutine(DownloadImage(results));
@@ -30,6 +31,20 @@ public class UIController : MonoBehaviour
             personCardControllers[i].SetInfo(personName);            
         }        
         ActivatePeopleListPanel();
+    }
+    public void LoadPersonDetails(Result result,int index)
+    {
+        Sprite photo = photos[index];
+        string email = $"Email: {result.email}";
+        string name = result.name.title;
+        name += $" {result.name.first}";
+        name += $" {result.name.last}";
+        name = $"Name: {name}";
+        string age = $"Age: {result.registered.age}";
+        string gender = $"Gender: {result.gender}";
+        string city = $"City: {result.location.city}";
+        personDetailsController.SetInfo(photo,email,name,age,gender, city);
+        ActivatePersonInfoPanel();
     }
     private void ActivatePanel(GameObject panel)
     {

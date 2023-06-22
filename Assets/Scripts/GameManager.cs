@@ -29,4 +29,9 @@ public class GameManager : MonoBehaviour
         Root = apiClient.Root;        
         uiController.LoadPersonCardsInfo(Root.results);
     }
+    public void CardClicked(int index)
+    {
+        print($"Card{index}");
+        uiController.LoadPersonDetails(Root.results[index], index);
+    }
 }
