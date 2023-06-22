@@ -30,4 +30,9 @@ public class APIClient : MonoBehaviour
 
         }
     }
+    public Root GetData()
+    {
+        StartCoroutine(GetDataCO());
+        return root;
+    }
 }
